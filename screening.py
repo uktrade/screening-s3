@@ -9,6 +9,7 @@ class screening:
         for buckets_name in self.list_bucket_from_aws():
             self.sceen_bucket(buckets_name)
         #ßprint(self.messege)
+        return(self.messege)
 
     def __iter__(self):
         return self
@@ -26,7 +27,8 @@ class screening:
         try:
          #   print ('The bucket name ' + str(bucket['Name']) + " is trying to get policy ")
             bucket_policy = self.aws_client.get_bucket_policy(Bucket=bucket['Name'])
-          #  print(bucket_policy)
+            print(bucket_policy['Policy'])
+
 
         except:
   #          print ('The bucket name ' + str(bucket['Name']) + " have no policy in place ")
@@ -39,9 +41,9 @@ class screening:
     def check_objet(self, object,buckets_name):
         try:
             object_info = self.aws_client.get_object_acl(Bucket=buckets_name, Key=object)
-            print(object)
+#            print(object)
            # print(object_info['Grants'][0]['Permission'])
-            print(set([i['Permission'] for i in object_info['Grants']]))
+ #ß           print(set([i['Permission'] for i in object_info['Grants']]))
            # print("\n")
            # print("\n")
            # print("\n")
@@ -58,4 +60,4 @@ class screening:
 
 
 
-joe = screening(os.environ['aws_bill_to_gicko_id'],os.environ['aws_bill_to_gicko_pass'])
+#screening(os.environ['aws_bill_to_gicko_id'],os.environ['aws_bill_to_gicko_pass'])
