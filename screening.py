@@ -3,13 +3,17 @@ import os
 
 
 class screening:
-    def __init__(self,aws_use_id,aws_use_pass):
+    def __init__(self):
         self.messege = []
+
+
+    def look_for_policy(self,aws_use_id,aws_use_pass):
         self.aws_client = boto3.client('s3',aws_access_key_id=aws_use_id,aws_secret_access_key=aws_use_pass)
         for buckets_name in self.list_bucket_from_aws():
             self.sceen_bucket(buckets_name)
-        #ßprint(self.messege)
+        print(self.messege)
         return(self.messege)
+
 
     def __iter__(self):
         return self
@@ -27,13 +31,11 @@ class screening:
         try:
          #   print ('The bucket name ' + str(bucket['Name']) + " is trying to get policy ")
             bucket_policy = self.aws_client.get_bucket_policy(Bucket=bucket['Name'])
-            print(bucket_policy['Policy'])
-
-
+            #print(bucket_policy['Policy'])
         except:
-  #          print ('The bucket name ' + str(bucket['Name']) + " have no policy in place ")
             msg = 'The bucket name ' + str(bucket['Name']) + " have no policy in place "
             self.messege.append(msg)
+            return (True)
         #check the value of bucket_policy and if we have an issue appand it to self.messege.
         acl = self.aws_client.get_bucket_acl(Bucket=bucket['Name'])
         # run if acl .... self.messege.append('issue whith acl ')
@@ -53,11 +55,12 @@ class screening:
 
     def sceen_bucket(self,buckets_name):
         file_list = self.aws_client.list_objects(Bucket=buckets_name)
-        for object in file_list['Contents']:
-            self.check_objet(object['Key'],buckets_name)
+        if 'Contents' in file_list:
+            for object in file_list['Contents']:
+                self.check_objet(object['Key'],buckets_name)
 
 
 
 
-
-#screening(os.environ['aws_bill_to_gicko_id'],os.environ['aws_bill_to_gicko_pass'])
+#scan_obj = screening()
+#scan_obj.look_for_policy(os.environ['aws_bill_to_gicko_id'],os.environ['aws_bill_to_gicko_pass'])
