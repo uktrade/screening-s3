@@ -1,0 +1,23 @@
+
+
+#file_to_down {
+  width: 80%;
+  height: 26px;
+  font-family: "Times New Roman", Times, serif;
+   float: left;
+
+}
+#folder {
+  width: 100%;
+  height: 26px;
+    float: left;
+
+}
+#size {
+    width: 20%;
+    height: 26px;
+    float: right;
+
+}
+
+
